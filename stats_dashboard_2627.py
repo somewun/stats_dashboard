@@ -85,7 +85,7 @@ else:
     df_training_data = load_private_csv("training_data_2627.csv")
 
     # Convert Date column to datetime data type
-    df_fixtures_table['Date'] = pd.to_datetime(df_fixtures_table['Date'], dayfirst=True)
+    #df_fixtures_table['Date'] = pd.to_datetime(df_fixtures_table['Date'], dayfirst=True)
 
     #Add points to the fixtures table
     df_fixtures_table["Wins"] = np.where(df_fixtures_table["Result"] == "W", 1, 0)
