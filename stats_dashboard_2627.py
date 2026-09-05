@@ -24,7 +24,7 @@ def load_private_csv(file):
     
     # Retrieve the token securely from Streamlit Secrets
     headers = {
-        "Authorization": f"token {st.secrets['GITHUB_PAT']}",
+        "Authorization": f"Bearer {st.secrets['GITHUB_PAT']}",
         "Accept": "application/vnd.github.v3.raw"  # Crucial to get raw text instead of JSON metadata
     }
     
