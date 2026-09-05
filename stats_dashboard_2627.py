@@ -19,7 +19,7 @@ def load_private_csv(file):
     # Construct the GitHub API URL for raw content
     # (Using the Accept header below allows fetching the actual file content)
     FILE_PATH = file
-    BRANCH = main
+    BRANCH = "main"
     url = f"https://github.com/somewun/dashboard_data/contents/{FILE_PATH}?ref={BRANCH}"
     
     # Retrieve the token securely from Streamlit Secrets
