@@ -1,4 +1,5 @@
-
+import io
+import requests
 import streamlit as st
 import pandas as pd
 import plotly.express as px
@@ -13,7 +14,29 @@ def calc_points (df_input):
     df_input['Points'] = np.select(result, points, default=0)
     return df_input
 
-#background_color = st.config.get_option("theme.backgroundColor")
+@st.cache_data(ttl=600)
+def load_private_csv(file):
+    # Construct the GitHub API URL for raw content
+    # (Using the Accept header below allows fetching the actual file content)
+    FILE_PATH = file
+    BRANCH = main
+    url = f"https://github.com/somewun/dashboard_data/contents/{FILE_PATH}?ref={BRANCH}"
+    
+    # Retrieve the token securely from Streamlit Secrets
+    headers = {
+        "Authorization": f"token {st.secrets['GITHUB_PAT']}",
+        "Accept": "application/vnd.github.v3.raw"  # Crucial to get raw text instead of JSON metadata
+    }
+    
+    response = requests.get(url, headers=headers)
+    
+    if response.status_code == 200:
+        # Convert the raw text stream into a Pandas DataFrame
+        df = pd.read_csv(io.StringIO(response.text))
+        return df
+    else:
+        st.error(f"Failed to fetch data from GitHub. Status Code: {response.status_code}")
+        return None
 
 RED = (255,0,0)
 BLUE = (0, 108, 149)
@@ -53,14 +76,13 @@ else:
     #with open("stats_dashboard_2627.py") as file:
         #exec(file.read())
 
-    #@st.cache_data
     #Load data sets
-    df_fixtures_table = pd.read_csv("fixtures_table_2627.csv")
-    df_opposition_table = pd.read_csv("opposition_table.csv")
-    df_player_table = pd.read_csv("player_table_2627.csv")
-    df_season_table = pd.read_csv("season_table.csv")
-    df_match_data = pd.read_csv("match_data_2627.csv")
-    df_training_data = pd.read_csv("training_data_2627.csv")
+    df_fixtures_table = load_private_csv("fixtures_table_2627.csv")
+    df_opposition_table = load_private_csv("opposition_table.csv")
+    df_player_table = load_private_csv("player_table_2627.csv")
+    df_season_table = load_private_csv("season_table.csv")
+    df_match_data = load_private_csv("match_data_2627.csv")
+    df_training_data = load_private_csv("training_data_2627.csv")
 
     # Convert Date column to datetime data type
     df_fixtures_table['Date'] = pd.to_datetime(df_fixtures_table['Date'], dayfirst=True)
