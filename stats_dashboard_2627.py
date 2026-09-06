@@ -15,7 +15,7 @@ def calc_points (df_input):
     return df_input
 
 @st.cache_data(ttl=600)
-def load_private_csv(file):
+def load_private_csv(file: str):
     # Construct the GitHub API URL for raw content
     # (Using the Accept header below allows fetching the actual file content)
     FILE_PATH = file
