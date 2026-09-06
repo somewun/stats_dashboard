@@ -20,7 +20,7 @@ def load_private_csv(file: str):
     # (Using the Accept header below allows fetching the actual file content)
     FILE_PATH = file
     BRANCH = "main"
-    url = f"https://api.github.com/somewun/Data/contents/{FILE_PATH}?ref={BRANCH}"
+    url = f"https://api.github.com/repos/somewun/Data/contents/{FILE_PATH}?ref={BRANCH}"
     
     # Retrieve the token securely from Streamlit Secrets
     headers = {
