@@ -153,7 +153,7 @@ else:
             with colb:
                 #Linegraaph of match stats
                 df_matches = pd.merge(df_match_data, df_fixtures_table, on='Match ID', how='left')
-                df_match_stats = df_matches.groupby('Date')[["Date","Goals", "Shots", "Assist", "Key Pass", "Saves", "Tcks made", "Tcks miss"]].sum().reset_index()
+                df_match_stats = df_matches.groupby('Date')[["Goals", "Shots", "Assist", "Key Pass", "Saves", "Tcks made", "Tcks miss"]].sum().reset_index()
                 fig_stats = px.line(df_match_stats, x="Date", y=df_match_stats.columns, hover_data={"Date": "|%B %d, %Y"})
                 fig_stats.update_xaxes(dtick="M1",tickformat="%b\n%Y")
                 st.plotly_chart(fig_stats)
@@ -248,7 +248,7 @@ else:
         
             #Linegraaph of individual player match stats
             df_matches = pd.merge(df_selected_player, df_fixtures_table, on='Match ID', how='left')
-            df_match_stats = df_matches.groupby('Date')[["Date","Goals", "Shots", "Assist", "Key Pass", "Saves", "Tcks made", "Tcks miss", "MVP"]].sum().reset_index()
+            df_match_stats = df_matches.groupby('Date')[["Goals", "Shots", "Assist", "Key Pass", "Saves", "Tcks made", "Tcks miss", "MVP"]].sum().reset_index()
             fig_stats = px.line(df_match_stats, x="Date", y=df_match_stats.columns, hover_data={"Date": "|%B %d, %Y"})
             fig_stats.update_xaxes(dtick="M1",tickformat="%b\n%Y")
             st.plotly_chart(fig_stats)
