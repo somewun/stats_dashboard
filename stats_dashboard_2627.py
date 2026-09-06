@@ -159,7 +159,7 @@ else:
                 st.plotly_chart(fig_stats)
 
                 #Bar charts showing goals for and conceeded vs teams
-                df_goals = df_results_table.groupby('Opposition Name')['Opposition Name', 'Goals For', 'Goals Against'].sum().reset_index()
+                df_goals = df_results_table.groupby('Opposition Name')[['Goals For', 'Goals Against']].sum().reset_index()
                 fig_goals = go.Figure(data=[go.Bar(name='Goals Scored', x=df_goals['Opposition Name'], y=df_goals['Goals For']),go.Bar(name='Goals Conceeded', x=df_goals['Opposition Name'], y=df_goals['Goals Against'])])
                 # Change the bar mode
                 fig_goals.update_layout(barmode='group')
@@ -295,12 +295,12 @@ else:
             df_results_table["Losses"] = np.where(df_results_table["Result"] == "L", 1, 0)
             df_results_table = calc_points(df_results_table)#['Points'] = np.select(result, points, default=0)
             #Display final Dataframe
-            st.dataframe(df_results_table.groupby('Opposition Name')['Opposition Name', 'Wins', 'Draws', 'Losses', 'Goals For', 'Goals Against', 'Points'].sum())
+            st.dataframe(df_results_table.groupby('Opposition Name')[['Wins', 'Draws', 'Losses', 'Goals For', 'Goals Against', 'Points']].sum())
 
             #Player stats for the season
             df_players = pd.merge(df_match_data, df_player_table, on='Player ID', how='left')
             df_players_stats = df_players[["Name","Pld", "Goals", "Shots", "Assist", "Key Pass", "Saves", "Tcks made", "Tcks miss"]]
-            st.dataframe(df_players_stats.groupby("Name")["Pld", "Goals", "Shots", "Assist", "Key Pass", "Saves", "Tcks made", "Tcks miss"].sum())
+            st.dataframe(df_players_stats.groupby("Name")[["Pld", "Goals", "Shots", "Assist", "Key Pass", "Saves", "Tcks made", "Tcks miss"]].sum())
     
 
     
