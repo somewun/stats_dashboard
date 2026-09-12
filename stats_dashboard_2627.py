@@ -274,7 +274,7 @@ else:
         
             #Cumulative points linechart
             df_fixtures_table = calc_points(df_fixtures_table)#['Points'] = np.select(result, points, default=0)
-            fig_points = px.ecdf(df_fixtures_table, x="Date", y="Points")
+            fig_points = px.ecdf(df_fixtures_table, x="Date", y="Points", ecdfnorm=None)
             st.plotly_chart(fig_points)
 
             #Cup Results Dataframe
