@@ -87,6 +87,9 @@ else:
     # Convert Date column to datetime data type
     df_fixtures_table['Date'] = pd.to_datetime(df_fixtures_table['Date'], dayfirst=True)
 
+    #Swap Shots for total shots (goal + shots)
+    df_match_data["Total Shots"] = df_match_data["Goals"] + df_match_data["Shots"]
+    
     #Add points to the fixtures table
     df_fixtures_table["Wins"] = np.where(df_fixtures_table["Result"] == "W", 1, 0)
     df_fixtures_table["Draws"] = np.where(df_fixtures_table["Result"] == "D", 1, 0)
@@ -113,7 +116,7 @@ else:
             with col2:
                 st.metric("Goals", value = int(df_match_data["Goals"].sum()))
             with col3:
-                st.metric("Shots", value = int(df_match_data["Shots"].sum()))
+                st.metric("Shots", value = int(df_match_data["Total Shots"].sum()))
             with col4:
                 st.metric("Assists", value = int(df_match_data["Assist"].sum()))
             with col5:
@@ -153,7 +156,7 @@ else:
             with colb:
                 #Linegraaph of match stats
                 df_matches = pd.merge(df_match_data, df_fixtures_table, on='Match ID', how='left')
-                df_match_stats = df_matches.groupby('Date')[["Goals", "Shots", "Assist", "Key Pass", "Saves", "Tcks made", "Tcks miss"]].sum().reset_index()
+                df_match_stats = df_matches.groupby('Date')[["Goals", "Total Shots", "Assist", "Key Pass", "Saves", "Tcks made", "Tcks miss"]].sum().reset_index()
                 fig_stats = px.line(df_match_stats, x="Date", y=df_match_stats.columns, hover_data={"Date": "|%B %d, %Y"})
                 fig_stats.update_xaxes(dtick="M1",tickformat="%b\n%Y")
                 st.plotly_chart(fig_stats)
@@ -206,7 +209,7 @@ else:
                 with col2:
                     st.metric("Goals", value=int(df_selected_player["Goals"].sum()))
                 with col3:
-                    st.metric("Shots", value=int(df_selected_player["Shots"].sum()))
+                    st.metric("Shots", value=int(df_selected_player["Total Shots"].sum()))
                 with col4:
                     st.metric("Assists", value=int(df_selected_player["Assist"].sum()))
                 with col5:
@@ -232,7 +235,7 @@ else:
                 with col2:
                     st.metric("Goals", value=round(df_selected_player["Goals"].sum() / match_denom, 2))
                 with col3:
-                    st.metric("Shots", value=round(df_selected_player["Shots"].sum() / match_denom, 2))
+                    st.metric("Shots", value=round(df_selected_player["Total Shots"].sum() / match_denom, 2))
                 with col4:
                     st.metric("Assists", value=round(df_selected_player["Assist"].sum() / match_denom, 2))
                 with col5:
@@ -248,7 +251,7 @@ else:
         
             #Linegraaph of individual player match stats
             df_matches = pd.merge(df_selected_player, df_fixtures_table, on='Match ID', how='left')
-            df_match_stats = df_matches.groupby('Date')[["Goals", "Shots", "Assist", "Key Pass", "Saves", "Tcks made", "Tcks miss", "MVP"]].sum().reset_index()
+            df_match_stats = df_matches.groupby('Date')[["Goals", "Total Shots", "Assist", "Key Pass", "Saves", "Tcks made", "Tcks miss", "MVP"]].sum().reset_index()
             fig_stats = px.line(df_match_stats, x="Date", y=df_match_stats.columns, hover_data={"Date": "|%B %d, %Y"})
             fig_stats.update_xaxes(dtick="M1",tickformat="%b\n%Y")
             st.plotly_chart(fig_stats)
@@ -299,8 +302,8 @@ else:
 
             #Player stats for the season
             df_players = pd.merge(df_match_data, df_player_table, on='Player ID', how='left')
-            df_players_stats = df_players[["Name","Pld", "Goals", "Shots", "Assist", "Key Pass", "Saves", "Tcks made", "Tcks miss"]]
-            st.dataframe(df_players_stats.groupby("Name")[["Pld", "Goals", "Shots", "Assist", "Key Pass", "Saves", "Tcks made", "Tcks miss"]].sum())
+            df_players_stats = df_players[["Name","Pld", "Goals", "Total Shots", "Assist", "Key Pass", "Saves", "Tcks made", "Tcks miss"]]
+            st.dataframe(df_players_stats.groupby("Name")[["Pld", "Goals", "Total Shots", "Assist", "Key Pass", "Saves", "Tcks made", "Tcks miss"]].sum())
     
 
     
