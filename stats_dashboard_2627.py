@@ -209,7 +209,7 @@ else:
                 with col2:
                     st.metric("Goals", value=int(df_selected_player["Goals"].sum()))
                 with col3:
-                    st.metric("Shots", value=int(df_selected_player["Total Shots"].sum()))
+                    st.metric("Shots", value=int(df_selected_player["Total Shots"].sum()) + int(df_selected_player["Goals"].sum()))
                 with col4:
                     st.metric("Assists", value=int(df_selected_player["Assist"].sum()))
                 with col5:
